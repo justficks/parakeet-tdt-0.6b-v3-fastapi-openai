@@ -116,13 +116,16 @@ def transcribe_audio():
     if not file or not file.filename:
         return jsonify({"error": "No file selected"}), 400
     
+    
     # OpenAI compatible parameters
-    model_name = request.form.get('model', 'model') # Ignored but accepted
+    model_name = request.form.get('model', 'whisper-1').lower()
     response_format = request.form.get('response_format', 'json')
     
+    print(f"Request Model: {model_name} | Format: {response_format}")
+
     # Legacy support
     if model_name == 'parakeet_srt_words':
-         pass # Handled below optionally
+         pass 
 
     original_filename = secure_filename(file.filename)
 

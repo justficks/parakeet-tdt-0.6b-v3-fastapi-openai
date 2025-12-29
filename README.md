@@ -20,15 +20,36 @@ Real-world performance tested on `story_spanish.mp3`:
 
 ## 🛠️ Installation
 
-1.  **Environment**: ensure you have Conda installed.
-    ```bash
-    conda create -n parakeet-onnx python=3.10
-    conda activate parakeet-onnx
-    pip install -r requirements.txt
-    ```
+### 1. Prerequisites
+Ensure you have **Python 3.10** and **FFmpeg** installed.
 
-2.  **Dependencies**:
-    -   `ffmpeg` must be installed on your system.
+#### Linux (Ubuntu/Debian)
+```bash
+sudo apt update && sudo apt install ffmpeg
+```
+
+#### Conda (Recommended)
+```bash
+conda create -n parakeet-onnx python=3.10
+conda activate parakeet-onnx
+```
+
+### 2. Install Dependencies
+Clone this repository and install the required packages:
+```bash
+git clone https://github.com/groxaxo/parakeet-tdt-0.6b-v3-fastapi-openai
+cd parakeet-tdt-0.6b-v3-fastapi-openai
+pip install -r requirements.txt
+```
+
+## 🧠 Supported Models
+
+The API accepts the following model names in the `model` parameter:
+-   `whisper-1` (Default)
+-   `parakeet`
+-   `parakeet-tdt-0.6b-v3`
+
+Both behave identically, processing audio with the **Parakeet TDT 1.1B (ONNX INT8)** model.
 
 ## 🚀 Usage
 

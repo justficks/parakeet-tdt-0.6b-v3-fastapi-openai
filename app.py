@@ -20,7 +20,7 @@ import uuid
 import subprocess
 import datetime
 import psutil
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 from werkzeug.utils import secure_filename
 
 import flask
@@ -124,7 +124,7 @@ def get_audio_duration(file_path: str) -> float:
 
 def detect_silence_points(file_path: str, silence_thresh: str = SILENCE_THRESHOLD, 
                           silence_duration: float = SILENCE_MIN_DURATION,
-                          total_duration: float | None = None) -> List[Tuple[float, float]]:
+                          total_duration: Optional[float] = None) -> List[Tuple[float, float]]:
     """
     Detect silence points in audio file using ffmpeg's silencedetect filter.
     
@@ -163,14 +163,15 @@ def detect_silence_points(file_path: str, silence_thresh: str = SILENCE_THRESHOL
             if 'silence_start:' in line:
                 try:
                     silence_start = float(line.split('silence_start:')[1].split()[0])
-                except Exception:
+                except (ValueError, IndexError):
                     silence_start = None
             elif 'silence_end:' in line and silence_start is not None:
                 try:
                     silence_end = float(line.split('silence_end:')[1].split()[0])
                     silence_points.append((silence_start, silence_end))
-                finally:
                     silence_start = None
+                except (ValueError, IndexError):
+                    pass
         
         # Close trailing silence if audio ended during silence
         if silence_start is not None and total_duration is not None:
@@ -219,8 +220,8 @@ def find_optimal_split_points(total_duration: float, target_chunk_duration: floa
         
         # Find silence points that overlap with the search window
         candidates = [
-            (s, e) for (s, e) in silence_points
-            if s <= search_end and e >= search_start
+            (start, end) for (start, end) in silence_points
+            if start <= search_end and end >= search_start
         ]
         
         chosen = None
@@ -228,13 +229,13 @@ def find_optimal_split_points(total_duration: float, target_chunk_duration: floa
             # Sort candidates by distance from target time
             candidates_sorted = sorted(
                 candidates,
-                key=lambda se: abs(((se[0] + se[1]) / 2.0) - target_time)
+                key=lambda silence_range: abs(((silence_range[0] + silence_range[1]) / 2.0) - target_time)
             )
             # Find first candidate that satisfies minimum gap constraint
-            for s, e in candidates_sorted:
-                sp = (s + e) / 2.0
-                if sp > prev + min_gap and sp < total_duration - min_gap:
-                    chosen = sp
+            for start, end in candidates_sorted:
+                split_point = (start + end) / 2.0
+                if split_point > prev + min_gap and split_point < total_duration - min_gap:
+                    chosen = split_point
                     break
         
         if chosen is None:

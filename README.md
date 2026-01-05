@@ -17,7 +17,8 @@ The metric used is **Speedup Factor** (Audio Duration / Processing Time). Higher
 
 | Implementation | Hardware | Model | Precision | Speedup |
 | --- | --- | --- | --- | --- |
-| **Parakeet TDT** (Ours) | **CPU** (i7-12700K) | **TDT 1.1B** | **int8** | **~17.0x** |
+| **Parakeet TDT** (Ours) | **CPU** (i7-12700KF) | **TDT 1.1B** | **int8** | **~29.7x** |
+| **Parakeet TDT** (Ours) | **CPU** (i7-4790) | **TDT 1.1B** | **int8** | **~17.6x** |
 | faster-whisper | GPU (RTX 3070 Ti) | Large-v2 | int8 | 13.2x |
 | faster-whisper | GPU (RTX 3070 Ti) | Large-v2 | fp16 | 12.4x |
 | faster-whisper | CPU (i7-12700K) | Small | int8 | 7.6x |
@@ -30,9 +31,9 @@ The metric used is **Speedup Factor** (Audio Duration / Processing Time). Higher
 
 | Metrics | Result |
 | --- | --- |
-| **Average Speedup** | **17.0x** |
-| **Real Time Factor (RTF)** | **0.059** |
-| **Max Speedup** | **19.2x** |
+| **Average Speedup** | **29.7x** |
+| **Real Time Factor (RTF)** | **0.033** |
+| **Max Speedup** | **~30x** |
 
 ## Requirements
 

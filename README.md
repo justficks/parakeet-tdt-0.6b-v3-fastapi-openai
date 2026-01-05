@@ -95,6 +95,19 @@ print(transcript)
 The server includes a built-in web interface for testing and easy drag-and-drop transcription.
 Access it at: **[http://127.0.0.1:5092](http://127.0.0.1:5092)**
 
+## Open WebUI Integration
+
+This project is designed to be a drop-in replacement for OpenAI in **Open WebUI**.
+
+1.  Go to **Open WebUI Settings > Audio**.
+2.  Set **STT Engine** to `OpenAI`.
+3.  Set **OpenAI Base URL** to `http://127.0.0.1:5092/v1`.
+4.  Set **OpenAI API Key** to `sk-no-key-required`.
+5.  Set **STT Model** to `parakeet-tdt-0.6b-v3`.
+6.  Click **Save**.
+
+Now, all voice interactions in Open WebUI will be transcribed locally by Parakeet TDT at lightning speeds.
+
 ## Model details
 
 When running the application, the ONNX models are automatically loaded from the `models/` directory. The primary model used is the **Parakeet TDT 1.1B** converted to ONNX with INT8 quantization, providing the optimal balance of speed and accuracy for English speech recognition.
